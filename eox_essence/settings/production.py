@@ -12,9 +12,9 @@ def plugin_settings(settings):  # pylint: disable=unused-argument
     """
     settings.EOX_ESSENCE_ENROLLMENT = getattr(settings, 'ENV_TOKENS', {}).get(
         'EOX_ESSENCE_ENROLLMENT',
-        settings.EOX_ESSENCE_ENROLLMENT
+        settings.EOX_ESSENCE_ENROLLMENT,
     )
     settings.EOX_ESSENCE_STUDENT = getattr(settings, 'ENV_TOKENS', {}).get(
         'EOX_ESSENCE_STUDENT',
-        settings.EOX_ESSENCE_STUDENT
+        settings.EOX_ESSENCE_STUDENT,
     )
