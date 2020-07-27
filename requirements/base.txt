@@ -4,6 +4,7 @@
 #
 #    make upgrade
 #
-django==1.11.29           # via -c requirements/constraints.txt, -r requirements/base.in
-djangorestframework==3.6.3  # via -c requirements/constraints.txt, -r requirements/base.in
+django==2.2.14            # via -c requirements/constraints.txt, -r requirements/base.in
+djangorestframework==3.9.4  # via -c requirements/constraints.txt, -r requirements/base.in
 pytz==2020.1              # via django
+sqlparse==0.3.1           # via django

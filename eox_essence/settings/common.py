@@ -33,9 +33,14 @@ TIME_ZONE = 'UTC'
 
 USE_TZ = True
 
+EOX_ESSENCE_ENROLLMENTS = 'openedx.core.djangoapps.enrollments'
+EOX_ESSENCE_STUDENT = 'student'
 
-def plugin_settings(settings):  # pylint: disable=unused-argument
+
+def plugin_settings(settings):
     """
     Set of plugin settings used by the Open Edx platform.
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
+    settings.EOX_ESSENCE_ENROLLMENTS = EOX_ESSENCE_ENROLLMENTS
+    settings.EOX_ESSENCE_STUDENT = EOX_ESSENCE_STUDENT

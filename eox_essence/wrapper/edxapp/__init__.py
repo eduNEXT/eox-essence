@@ -6,7 +6,6 @@ structure in this folder is the following:
 
     ├── edxapp
         ├── __init__.py
-        ├── import_module.py
         ├── wrapped-django-app-1.py
         ├── wrapped-django-app-2.py
         │
@@ -40,4 +39,33 @@ wrapped-django-app: A analogous module to a edx-platform django application.
 Modules:
     import_module: generic import function.
     site_configuration: Abstract backend for site_configuration djangoapp.
+
+Methods:
+    get_module: Return module securely.
 """
+import logging
+from importlib import import_module
+
+from django.conf import settings
+
+logger = logging.getLogger(__name__)
+
+
+def get_module(app_name, module):
+    """
+    Return module securely.
+    """
+    setting_name = 'EOX_ESSENCE_{}'.format(app_name.upper())
+    backend_route = getattr(settings, setting_name)
+
+    try:
+        backend = import_module(backend_route)
+    except ImportError:
+        logger.error(
+            'Invalid setting value [%s] for %s',
+            backend_route,
+            setting_name,
+        )
+        backend = import_module('eox_essence.wrapper.mimic.{}'.format(app_name))
+
+    return getattr(backend, module)
