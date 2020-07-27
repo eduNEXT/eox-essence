@@ -25,10 +25,41 @@ Juniper:
 ++++++++
 /edx/etc/lms.yml and /edx/etc/studio.yml
 
-Mimic
-********
+Interface
+#########
+Reliable Open edX API(Application program interface) which provides a long term way to interact with multiple Open edX dependencies by using external tools, for the get case, this returns two kind of responses, first, an instance of the original model, which depends on the configuration and Open edX library, second, a serialized instance for the object, which is a reliable long term solution, that contains the same information through different versions in order to give a stable response to others external tools.
 
+Application program interface
+*****************************
+
+- enrollment: Interface for course enrollment using as default model [https://github.com/edx/edx-platform/tree/master/common/djangoapps/student/models.py](CourseEnrollment)
+
+How to use
+**********
+Get the following methods:
+
+- get_<interface_name>_model
+- get_serialized_<interface_name>
+
+
+Example:
+++++++++
+
+.. code-block:: python
+
+  from eox_essence.interface.enrollment import get_enrollments_model
+
+  enrollment = get_enrollment_model(user, course_key)
+
+Wrapper
+#########
 In test environments the edx-platform absence makes too complex to run unit testing, this dependency provides alternative modules that allow testing isolated environments. The main purpose is to avoid ImportError exceptions, however if you intend to use a method or class attribute the best option is to use a mock in the corresponding test.
+
+Supported Dependencies.
+***********************
+Dependencies list.
+- enrollments[https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/enrollments]
+- student[https://github.com/edx/edx-platform/tree/master/common/djangoapps/student]
 
 How to use
 **********
@@ -40,12 +71,7 @@ Example:
 
 .. code-block:: python
 
-  from eox_essence.edxapp.site_configuration import helpers
-
-Supported Dependencies.
-########
-Dependencies list.
--
+  from eox_essence.wrapper.edxapp.enrollments import api
 
 Installation
 ############
