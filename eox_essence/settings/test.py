@@ -24,3 +24,5 @@ DATABASES = {
         'NAME': 'db.sqlite3',
     }
 }
+
+EOX_ESSENCE_TEST_MODULE = 'test.module.path'
