@@ -36,7 +36,7 @@ class WrapperStudentTestCase(TestCase):
         Expected behavior:
             - Return the expected result.
         """
-        self.assertEqual('student', settings.EOX_ESSENCE_STUDENT)
+        self.assertEqual('student', settings.EOX_ESSENCE_STUDENT['default'])
 
     def test_has_right_attributes(self):
         """

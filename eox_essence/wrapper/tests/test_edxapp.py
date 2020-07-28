@@ -18,6 +18,27 @@ class GetModuleTestCase(TestCase):
     """Test all the possibles scenarios for get_module and verifies the right behavior."""
 
     @patch('eox_essence.wrapper.edxapp.import_module')
+    def test_get_alternative_module(self, import_module_mock):
+        """
+        This method tests the desired behavior when the module is in the
+        alternative backend list.
+
+        Expected behavior:
+            - Return the expected result.
+            - import_module is called once with the right setting value.
+        """
+        module = Mock()
+        module.expected_result = 'This is a test value.'
+        import_module_mock.return_value = module
+
+        result = get_module('test_module', 'alternative_module')
+
+        self.assertEqual(module, result)
+        import_module_mock.assert_called_once_with(
+            settings.EOX_ESSENCE_TEST_MODULE['alternative_backends']['alternative_module']
+        )
+
+    @patch('eox_essence.wrapper.edxapp.import_module')
     def test_get_valid_module(self, import_module_mock):
         """
         This method tests the desired behavior when all the parameters
@@ -34,7 +55,7 @@ class GetModuleTestCase(TestCase):
         result = get_module('test_module', 'expected_result')
 
         self.assertEqual(module.expected_result, result)
-        import_module_mock.assert_called_once_with(settings.EOX_ESSENCE_TEST_MODULE)
+        import_module_mock.assert_called_once_with(settings.EOX_ESSENCE_TEST_MODULE['default'])
 
     def test_get_invalid_module(self):
         """
@@ -46,7 +67,7 @@ class GetModuleTestCase(TestCase):
             - Return the value stored in the mimic test module.
         """
         error_message = 'Invalid setting value [{}] for {}'.format(
-            settings.EOX_ESSENCE_TEST_MODULE,
+            settings.EOX_ESSENCE_TEST_MODULE['default'],
             'EOX_ESSENCE_TEST_MODULE',
         )
 
@@ -84,4 +105,4 @@ class GetModuleTestCase(TestCase):
         with self.assertRaises(AttributeError):
             get_module('test_module', 'invalid_attribute')
 
-        import_module_mock.assert_called_once_with(settings.EOX_ESSENCE_TEST_MODULE)
+        import_module_mock.assert_called_once_with(settings.EOX_ESSENCE_TEST_MODULE['default'])

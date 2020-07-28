@@ -26,19 +26,16 @@ wrapped-django-app: A analogous module to a edx-platform django application.
 
     Example file:
 
-    from eox_wrapper.edxapp.import_module import get_module
+    from eox_essence.wrapper.edxapp import get_module
 
-    backend = get_module(django_app_name)
+    module_1 = get_module(django_app_name, module_name_1)
+    module_2 = get_module(django_app_name, module_name_2)
 
-    module_1 = backend.module_1
-    module_2 = backend.module_2
-    .
-    .
-    module_n = backend.module_n
+    module_n = get_module(django_app_name, module_name_n)
 
 Modules:
-    import_module: generic import function.
-    site_configuration: Abstract backend for site_configuration djangoapp.
+    enrollments: Abstract backend for enrollments djangoapp.
+    student: Abstract backend for student djangoapp.
 
 Methods:
     get_module: Return module securely.
@@ -56,7 +53,13 @@ def get_module(app_name, module):
     Return module securely.
     """
     setting_name = 'EOX_ESSENCE_{}'.format(app_name.upper())
-    backend_route = getattr(settings, setting_name)
+    backend_settings = getattr(settings, setting_name)
+    alternative_backends = backend_settings.get('alternative_backends', {})
+
+    if module in alternative_backends:
+        return import_module(alternative_backends[module])
+
+    backend_route = backend_settings.get('default', '')
 
     try:
         backend = import_module(backend_route)

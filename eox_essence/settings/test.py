@@ -25,4 +25,9 @@ DATABASES = {
     }
 }
 
-EOX_ESSENCE_TEST_MODULE = 'test.module.path'
+EOX_ESSENCE_TEST_MODULE = {
+    'default': 'test.module.path',
+    'alternative_backends': {
+        'alternative_module': 'test.alternative.module.path',
+    },
+}

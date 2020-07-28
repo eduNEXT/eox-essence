@@ -33,8 +33,12 @@ TIME_ZONE = 'UTC'
 
 USE_TZ = True
 
-EOX_ESSENCE_ENROLLMENTS = 'openedx.core.djangoapps.enrollments'
-EOX_ESSENCE_STUDENT = 'student'
+EOX_ESSENCE_ENROLLMENTS = {
+    'default': 'openedx.core.djangoapps.enrollments',
+}
+EOX_ESSENCE_STUDENT = {
+    'default': 'student',
+}
 
 
 def plugin_settings(settings):

@@ -36,7 +36,7 @@ class WrapperEnrollmentsTestCase(TestCase):
         Expected behavior:
             - Return the expected result.
         """
-        self.assertEqual('openedx.core.djangoapps.enrollments', settings.EOX_ESSENCE_ENROLLMENTS)
+        self.assertEqual('openedx.core.djangoapps.enrollments', settings.EOX_ESSENCE_ENROLLMENTS['default'])
 
     def test_has_right_attributes(self):
         """
