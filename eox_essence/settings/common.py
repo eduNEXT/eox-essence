@@ -33,9 +33,32 @@ TIME_ZONE = 'UTC'
 
 USE_TZ = True
 
+EOX_ESSENCE_ENROLLMENTS = {
+    'model': {
+        'backend': 'student.models',
+        'name': 'CourseEnrollment',
+        'get': 'get_enrollment',
+        'allowed_parameters': [
+            'course_key',
+            'user',
+        ],
+    },
+    'serialized': {
+        'backend': 'openedx.core.djangoapps.enrollments',
+        'name': 'api',
+        'get': 'get_enrollment',
+        'allowed_parameters': [
+            'username',
+            'course_id',
+        ],
+    },
 
-def plugin_settings(settings):  # pylint: disable=unused-argument
+}
+
+
+def plugin_settings(settings):
     """
     Set of plugin settings used by the Open Edx platform.
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
+    settings.EOX_ESSENCE_ENROLLMENTS = EOX_ESSENCE_ENROLLMENTS

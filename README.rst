@@ -25,27 +25,67 @@ Juniper:
 ++++++++
 /edx/etc/lms.yml and /edx/etc/studio.yml
 
-Mimic
-********
+Interface
+#########
+Reliable Open edX API(Application program interface) which provides a long term way to interact with multiple Open edX dependencies by using external tools, for the get case, this returns two kind of responses, first, an instance of the original model, which depends on the configuration and Open edX library, second, a serialized instance for the object, which is a reliable long term solution, that contains the same information through different versions in order to give a stable response to others external tools.
 
-In test environments the edx-platform absence makes too complex to run unit testing, this dependency provides alternative modules that allow testing isolated environments. The main purpose is to avoid ImportError exceptions, however if you intend to use a method or class attribute the best option is to use a mock in the corresponding test.
+Application program interface
+*****************************
 
-How to use
-**********
+- enrollment: Interface for course enrollment using as default model [https://github.com/edx/edx-platform/tree/master/common/djangoapps/student/models.py](CourseEnrollment)
 
-First of all you have to verify, if the dependency exist in our list, then import it from the edxapp package.
+How to use.
+***********
+
+Required configurations.
+++++++++++++++++++++++++
+
+.. code-block:: python
+
+    EOX_ESSENCE_ENROLLMENTS = {
+        'model': { # This will contain all the relate information for the enrollments model.
+            'backend': 'module_path',  # [Required]Path of the model by default student.models
+            'name': 'model_name',  # [Required]Model name by default CourseEnrollment
+            'get': 'model_class_method',  #[Optional] if the model has a class method which returns the desired object.
+            'allowed_parameters': [ #[Optional] the allowed parameter in the previous method.
+                'course_key',
+                'user',
+            ],
+        },
+        'serialized': {  # This will contain all the relate information for the enrollments api.
+            'backend': 'api_path', # [Required]Path of the api file.
+            'name': 'api_name',  # [Required]Api name .
+            'get': 'get_enrollment',  # [Required] Method name which will  return the serialized response.
+            'allowed_parameters': [ #[Optional] the allowed parameter in the previous method.
+                'username',
+                'course_id',
+            ],
+        },
+
+    }
+
+Supported methods.
+++++++++++++++++++
+
+The following methods are supported for every interface.
+
+- get_model
+- get_serialized
+
+Interface list.
++++++++++++++++
+- Enrollments
+
 
 Example:
 ++++++++
 
 .. code-block:: python
 
-  from eox_essence.edxapp.site_configuration import helpers
+  from eox_essence.interface.enrollment import EnrollmentEoxEssenceAPI
 
-Supported Dependencies.
-########
-Dependencies list.
--
+  MODEL = EnrollmentEoxEssenceAPI.get_model('staff', 'course-v1:edX+DemoX+Demo_Course')
+  SERIALIZED = EnrollmentEoxEssenceAPI.get_serialized('staff', 'course-v1:edX+DemoX+Demo_Course')
 
 Installation
 ############
