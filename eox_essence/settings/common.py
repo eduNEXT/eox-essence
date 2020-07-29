@@ -49,7 +49,6 @@ EOX_ESSENCE_ENROLLMENTS = {
         'name': 'api',
         'get': 'get_enrollment',
         'allowed_parameters': [
-            'course_key',
             'username',
             'course_id',
         ],

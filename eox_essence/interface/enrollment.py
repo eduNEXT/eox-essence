@@ -18,12 +18,12 @@ class EnrollmentEoxEssenceAPI(EoxEssenceAPIBase):
         """
         try:
             parameters = {
-                'user': User.objects.get(username=username),
+                'course_id': course_id,
                 'course_key': CourseKey.from_string(course_id),
+                'user': User.objects.get(username=username),
             }
 
             return super().get_model(**parameters)
-
         except InvalidKeyError as error:
             # TO-DO Custom exception
             Exception(error)
@@ -36,6 +36,7 @@ class EnrollmentEoxEssenceAPI(EoxEssenceAPIBase):
                 'username': username,
                 'course_id': course_id,
             }
+
             return super().get_serialized(**parameters)
         except InvalidKeyError as error:
             # TO-DO Custom exception
