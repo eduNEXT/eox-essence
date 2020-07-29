@@ -34,12 +34,47 @@ Application program interface
 
 - enrollment: Interface for course enrollment using as default model [https://github.com/edx/edx-platform/tree/master/common/djangoapps/student/models.py](CourseEnrollment)
 
-How to use
-**********
-Get the following methods:
+How to use.
+***********
+
+Required configurations.
+++++++++++++++++++++++++
+
+.. code-block:: python
+
+    EOX_ESSENCE_ENROLLMENTS = {
+        'model': { # This will contain all the relate information for the enrollments model.
+            'backend': 'module_path',  # [Required]Path of the model by default student.models
+            'name': 'model_name',  # [Required]Model name by default CourseEnrollment
+            'get': 'model_class_method',  #[Optional] if the model has a class method which returns the desired object.
+            'allowed_parameters': [ #[Optional] the allowed parameter in the previous method.
+                'course_key',
+                'user',
+            ],
+        },
+        'serialized': {  # This will contain all the relate information for the enrollments api.
+            'backend': 'api_path', # [Required]Path of the api file.
+            'name': 'api_name',  # [Required]Api name .
+            'get': 'get_enrollment',  # [Required] Method name which will  return the serialized response.
+            'allowed_parameters': [ #[Optional] the allowed parameter in the previous method.
+                'username',
+                'course_id',
+            ],
+        },
+
+    }
+
+Supported methods.
+++++++++++++++++++
+
+The following methods are supported for every interface.
 
 - get_model
 - get_serialized
+
+Interface list.
++++++++++++++++
+- Enrollments
 
 
 Example:
@@ -49,8 +84,8 @@ Example:
 
   from eox_essence.interface.enrollment import EnrollmentEoxEssenceAPI
 
-  MODEL = EnrollmentEoxEssenceAPI().get_model('staff', 'course-v1:edX+DemoX+Demo_Course')
-  SERIALIZED = EnrollmentEoxEssenceAPI().get_serialized('staff', 'course-v1:edX+DemoX+Demo_Course')
+  MODEL = EnrollmentEoxEssenceAPI.get_model('staff', 'course-v1:edX+DemoX+Demo_Course')
+  SERIALIZED = EnrollmentEoxEssenceAPI.get_serialized('staff', 'course-v1:edX+DemoX+Demo_Course')
 
 Installation
 ############

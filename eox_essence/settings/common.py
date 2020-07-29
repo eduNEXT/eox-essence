@@ -41,7 +41,6 @@ EOX_ESSENCE_ENROLLMENTS = {
         'allowed_parameters': [
             'course_key',
             'user',
-            'course_id',
         ],
     },
     'serialized': {
