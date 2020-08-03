@@ -34,25 +34,17 @@ TIME_ZONE = 'UTC'
 USE_TZ = True
 
 EOX_ESSENCE_ENROLLMENTS = {
+    'model_api': 'eox_essence.wrappers.enrollments.model_api',
+    'serialized_api': 'eox_essence.wrappers.enrollments.serialized_api',
     'model': {
         'backend': 'student.models',
         'name': 'CourseEnrollment',
         'get': 'get_enrollment',
-        'allowed_parameters': [
-            'course_key',
-            'user',
-        ],
     },
     'serialized': {
-        'backend': 'openedx.core.djangoapps.enrollments',
-        'name': 'api',
-        'get': 'get_enrollment',
-        'allowed_parameters': [
-            'username',
-            'course_id',
-        ],
+        'backend': 'openedx.core.djangoapps.enrollments.serializers',
+        'name': 'CourseEnrollmentSerializer',
     },
-
 }
 
 

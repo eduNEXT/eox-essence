@@ -43,25 +43,17 @@ Required configurations.
 .. code-block:: python
 
     EOX_ESSENCE_ENROLLMENTS = {
-        'model': { # This will contain all the relate information for the enrollments model.
-            'backend': 'module_path',  # [Required]Path of the model by default student.models
-            'name': 'model_name',  # [Required]Model name by default CourseEnrollment
-            'get': 'model_class_method',  #[Optional] if the model has a class method which returns the desired object.
-            'allowed_parameters': [ #[Optional] the allowed parameter in the previous method.
-                'course_key',
-                'user',
-            ],
+        'model_api': 'eox_essence.wrappers.enrollments.model_api',  # [Required] Path for the model api.
+        'serialized_api': 'eox_essence.wrappers.enrollments.serialized_api',  # [Required] Path for the serializ api.
+        'model': {
+            'backend': 'student.models',  # [Required]Path of the model by default student.models
+            'name': 'CourseEnrollment',  # [Required]Model name by default CourseEnrollment
+            'get': 'get_enrollment',  #[Optional] if the model has a class method which returns the desired object.
         },
-        'serialized': {  # This will contain all the relate information for the enrollments api.
-            'backend': 'api_path', # [Required]Path of the api file.
-            'name': 'api_name',  # [Required]Api name .
-            'get': 'get_enrollment',  # [Required] Method name which will  return the serialized response.
-            'allowed_parameters': [ #[Optional] the allowed parameter in the previous method.
-                'username',
-                'course_id',
-            ],
+        'serialized': {
+            'backend': 'openedx.core.djangoapps.enrollments.serializers',  # [Required]Path of the serialized by default enrollments.serializers
+            'name': 'CourseEnrollmentSerializer',  # [Required]Serializer name by default CourseEnrollmentSerializer
         },
-
     }
 
 Supported methods.
@@ -84,8 +76,8 @@ Example:
 
   from eox_essence.interface.enrollment import EnrollmentEoxEssenceAPI
 
-  MODEL = EnrollmentEoxEssenceAPI.get_model('staff', 'course-v1:edX+DemoX+Demo_Course')
-  SERIALIZED = EnrollmentEoxEssenceAPI.get_serialized('staff', 'course-v1:edX+DemoX+Demo_Course')
+  MODEL = EnrollmentEoxEssenceAPI.get_model(username='staff', course_id='course-v1:edX+DemoX+Demo_Course')
+  SERIALIZED = EnrollmentEoxEssenceAPI.get_serialized(username='staff', course_id='course-v1:edX+DemoX+Demo_Course')
 
 Installation
 ############

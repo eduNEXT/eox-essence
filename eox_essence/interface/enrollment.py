@@ -1,46 +1,32 @@
 """
 """
 from django.conf import settings
-from django.contrib.auth.models import User
-from opaque_keys import InvalidKeyError
-from opaque_keys.edx.keys import CourseKey
 
-from eox_essence.interface import EoxEssenceAPIBase
+from eox_essence.interface import AbstractEoxEssenceAPI
 
 
-class EnrollmentEoxEssenceAPI(EoxEssenceAPIBase):
+class EnrollmentEoxEssenceAPI(AbstractEoxEssenceAPI):
     """"""
 
-    setting_name = 'EOX_ESSENCE_ENROLLMENTS'
-    backend_settings = getattr(settings, 'EOX_ESSENCE_ENROLLMENTS', {})
+    api_settings = {
+        'model_api': {
+            'backend': settings.EOX_ESSENCE_ENROLLMENTS.get('model_api'),
+            'name': 'EnrollmentsModelWrapper',
+        },
+        'serialized_api': {
+            'backend': settings.EOX_ESSENCE_ENROLLMENTS.get('serialized_api'),
+            'name': 'EnrollmentsSerializedWrapper',
+        },
+    }
 
     @classmethod
-    def get_model(cls, username, course_id, **kwargs):
+    def get_model_settings(cls):
         """
         """
-        try:
-            kwargs.update({
-                'course_id': course_id,
-                'course_key': CourseKey.from_string(course_id),
-                'user': User.objects.get(username=username),
-            })
-
-            return super().get_model(**kwargs)
-        except InvalidKeyError as error:
-            # TO-DO Custom exception
-            Exception(error)
+        return cls.api_settings['model_api']
 
     @classmethod
-    def get_serialized(cls, username, course_id, **kwargs):
+    def get_serialized_settings(cls):
         """
         """
-        try:
-            kwargs.update({
-                'username': username,
-                'course_id': course_id,
-            })
-
-            return super().get_serialized(**kwargs)
-        except InvalidKeyError as error:
-            # TO-DO Custom exception
-            Exception(error)
+        return cls.api_settings['serialized_api']

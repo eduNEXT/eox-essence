@@ -18,5 +18,5 @@ class EoxEssenceInvalidBackend(EoxEssenceBadConfiguration):
     """docstring for EoxEssenceInvalidBackend"""
 
 
-class EoxEssenceInvalidParameters(EoxEssenceBadConfiguration):
-    """docstring for EoxEssenceInvalidParameters"""
+class EoxEssenceInvalidSerializer(EoxEssenceBadConfiguration):
+    """docstring for EoxEssenceInvalidSerializer"""
